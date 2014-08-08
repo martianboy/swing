@@ -1,7 +1,7 @@
 import Foundation
 import core
 
-let server = TCPServer(ip: "127.0.0.1", port: 8080)
+let server = TCPServer(ip: "127.0.0.1", port: 8100)
 
 println("Waiting for connection...")
 
