@@ -9,14 +9,16 @@ server.start {(client, error) in
 
     println("New connection")
 
-    let data = [Byte("H"), Byte("I"), 13, 10]
-
-    client?.write(data);
+    let response =
+        "HTTP/1.1 200 OK\r\n" +
+        "Content-Type: text/plain\r\n" +
+        "Content-Length: 12\r\n" +
+        "\r\n" +
+        "hello world\r\n"
 
     client?.read {(data, error) in
-
-        println("Incoming data: \(data)")
-
-        client?.write(data!);
+        let str = NSString(bytes: data!, length: data!.endIndex, encoding: NSUTF8StringEncoding);
+        println("Incoming data: \(str)");
+        client?.write(response, nil);
     }
 }

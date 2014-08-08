@@ -20,23 +20,29 @@ public class Stream
 
     public func read(callback: ReadCallback)
     {
-        self.readCallback = callback
+        self.readCallback = callback;
 
         stream_read(self.__stream, __read_cb)
     }
 
-    public func write(data: [Byte], callback: WriteCallback?)
+    public func write(data: String, callback: WriteCallback?)
     {
-        self.writeCallback = callback
-
-        var len = UInt(data.count)
-        var buffer = UnsafeMutablePointer<Int8>(malloc(len)) // TODO: Free
-        memcpy(buffer, data, len)
-
-        stream_write(self.__stream, buffer, __write_cb)
+        self.writeCallback = callback;
+        data.withCString({( buffer : UnsafePointer<Int8> ) -> Void in
+            stream_write(self.__stream, buffer, self.__write_cb);
+        });
     }
 
-    public func write(data: [Byte])
+    public func write(data: [Int8], callback: WriteCallback?)
+    {
+        self.writeCallback = callback;
+
+        data.withUnsafeBufferPointer { (buffer: UnsafeBufferPointer<Int8>) -> Void in
+            stream_write(self.__stream, buffer.baseAddress, self.__write_cb);
+        }
+    }
+
+    public func write(data: [Int8])
     {
         self.write(data, callback: nil)
     }
