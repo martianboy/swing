@@ -10,8 +10,8 @@ echo "Building main"
 xcrun swiftc main.swift \
   -module-name main \
   -sdk $(xcrun --show-sdk-path --sdk macosx) \
-  -I .. \
   -I modules/core \
+  -I modules/core/include \
   -I modules/core/out \
   -L modules/core/lib \
   -L modules/core/out \
